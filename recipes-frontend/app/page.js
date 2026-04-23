@@ -1,32 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import RecipeList from "@/components/RecipeList";
+import { fetchRecipes } from "@/lib/api";  //<--- import the API helper function
+import RecipeCardList from "@/components/RecipeCardList";  //<--- import a component to render the list
+import Alert from "@mui/material/Alert";
+import RecipeList from "@/components/RecipeList"; //<--- import MUI Alert for error messages
 
 export default function HomePage() {
   const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/recipes")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch recipes");
-        }
-        return response.json();
-      })
-      .then((data) => setRecipes(data))
+    fetchRecipes()
+      .then(setRecipes)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <main>
-      <h1>Recipes</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {!loading && !error && <RecipeList recipes={recipes} />}
+      <h1>RecipeShare</h1>
+      {loading ? (
+        <p>Loading recipes...</p>
+      ) : error ? (
+        <Alert severity="error">{error}</Alert>
+      ) : (
+        <RecipeList recipes={recipes} />
+      )}
     </main>
   );
 }
