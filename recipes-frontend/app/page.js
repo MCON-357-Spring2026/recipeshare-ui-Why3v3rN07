@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchRecipes } from "@/lib/api";  //<--- import the API helper function
 import RecipeCardList from "@/components/RecipeCardList";  //<--- import a component to render the list
-import Alert from "@mui/material/Alert";
-import RecipeList from "@/components/RecipeList"; //<--- import MUI Alert for error messages
+import Alert from "@mui/material/Alert"; //<--- import MUI Alert for error messages
 
 export default function HomePage() {
   const [recipes, setRecipes] = useState([]);
@@ -26,7 +25,7 @@ export default function HomePage() {
       ) : error ? (
         <Alert severity="error">{error}</Alert>
       ) : (
-        <RecipeList recipes={recipes} />
+        <RecipeCardList recipes={recipes} />
       )}
     </main>
   );
