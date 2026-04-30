@@ -20,8 +20,8 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      await login(username, password);
-      saveAuth(username, password);
+      const data = await login(username, password);
+      saveAuth(username, password, data.id);
       window.location.href = "/";   // ← full reload so NavBar re-reads localStorage
     } catch (err) {
       setError(err.message);
